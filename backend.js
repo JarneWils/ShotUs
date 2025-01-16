@@ -19,10 +19,10 @@ const backEndPlayers = {}
 const backEndProjectiles = {}
 
 // SPEED PLAYER
-const SPEED = 4
+const SPEED = 2.5
 
 // SPEED KOGEL
-const KOGEL_SPEED = 5
+const KOGEL_SPEED = 3
 
 const RADIUS = 20
 const PROJECTILE_RADIUS = 5
@@ -75,7 +75,7 @@ io.on('connection', (socket) => {
       hp: 3,
       canvas: { width: scaledWidth, height: scaledHeight },
       radius: RADIUS,
-      shots: 6,
+      shots: 1000,
     }
 
     backEndPlayers[socket.id].canvas = {
