@@ -1,0 +1,197 @@
+<html>
+  <head>
+    <style>
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        margin: 0;
+        background: #000000;
+        overflow: hidden;
+      }
+
+      input::placeholder {
+        color: #94a3b8;
+        font-size: 15px;
+      }
+
+      canvas {
+        width: 1450px;
+        height: 650px;
+        background-color: rgb(25, 25, 25);
+        border: solid 5px #475569;
+      }
+
+      .player-container {
+        position: absolute;
+        color: #475569;
+        padding: 8px;
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        user-select: none;
+      }
+
+      .player-container .title {
+        margin-bottom: 8px;
+      }
+
+      #customFileButton {
+        padding: 8px 20px;
+        border-radius: 100px;
+        border: none;
+        margin-left: 10px;
+        margin-top: 30px;
+        background-color: #475569;
+        color: white;
+        cursor: pointer;
+      }
+
+      #fileLabel {
+        margin-left: 10px;
+        color: #94a3b8;
+      }
+
+      .username-form-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      #usernameInput {
+        padding: 12px;
+        border-radius: 20px;
+        border: none;
+        background: #475569;
+        color: #cbd5e1;
+      }
+      #usernameInput:hover {
+        background-color: #586b86;
+      }
+
+      .username-form-container button {
+        width: 260px;
+        padding: 8px 20px;
+        border-radius: 100px;
+        border: none;
+        font-family: sans-serif;
+        font-size: 14px;
+        color: white;
+        cursor: pointer;
+        margin-top: 5px;
+      }
+      .startButton{
+        background-color: rgb(9, 169, 197);
+        font-weight: 600;
+      }
+      .startButton:hover{
+        background-color: rgb(11, 139, 162);
+      }
+
+      #imageInput {
+        display: none;
+      }
+
+      #uploadButton {
+        padding: 8px 20px;
+        border-radius: 100px;
+        border: none;
+        background-color: #475569;
+        color: white;
+        cursor: pointer;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #uploadButton:hover {
+        background-color: #586b86;
+      }
+
+      #uploadButton i {
+        font-size: 18px;
+        color: white;
+      }
+
+      #bulletsContainer {
+        position: fixed;
+        width: 1450px;
+        display: flex;
+        gap: 10px;
+        margin-top: -25px;
+        justify-content: center;
+      }
+      .bullet{
+        color: white;
+        font-size: 40px;
+      }
+
+    </style>
+  </head>
+  <body style="display: flex; align-items: center; justify-content: center">
+
+    <div>
+
+      <div class="player-container">
+        <div class="title">PLAYERS</div>
+        <div id="playerLabels"></div>
+      </div>
+
+      <div id="bulletsContainer">
+        <div class="bullet"><svg fill="#ffa200" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <polygon points="297.236,327.676 184.324,214.763 35.455,363.632 21.849,350.027 0,371.876 13.605,385.481 126.518,498.395 126.519,498.395 140.124,512 161.973,490.151 148.368,476.545 "></polygon> </g> </g> <g> <g> <path d="M479.49,12.536c-3.024,1.166-70.873,27.806-141.442,93.595l67.821,67.821c65.787-70.565,92.429-138.417,93.595-141.441 L512,0L479.49,12.536z"></path> </g> </g> <g> <g> <polygon points="306.914,118.696 261.546,164.064 206.494,193.234 318.765,305.505 347.935,250.455 393.303,205.086 "></polygon> </g> </g> </g></svg></div>
+        <div class="bullet"><svg fill="#ffa200" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <polygon points="297.236,327.676 184.324,214.763 35.455,363.632 21.849,350.027 0,371.876 13.605,385.481 126.518,498.395 126.519,498.395 140.124,512 161.973,490.151 148.368,476.545 "></polygon> </g> </g> <g> <g> <path d="M479.49,12.536c-3.024,1.166-70.873,27.806-141.442,93.595l67.821,67.821c65.787-70.565,92.429-138.417,93.595-141.441 L512,0L479.49,12.536z"></path> </g> </g> <g> <g> <polygon points="306.914,118.696 261.546,164.064 206.494,193.234 318.765,305.505 347.935,250.455 393.303,205.086 "></polygon> </g> </g> </g></svg></div>
+        <div class="bullet"><svg fill="#ffa200" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <polygon points="297.236,327.676 184.324,214.763 35.455,363.632 21.849,350.027 0,371.876 13.605,385.481 126.518,498.395 126.519,498.395 140.124,512 161.973,490.151 148.368,476.545 "></polygon> </g> </g> <g> <g> <path d="M479.49,12.536c-3.024,1.166-70.873,27.806-141.442,93.595l67.821,67.821c65.787-70.565,92.429-138.417,93.595-141.441 L512,0L479.49,12.536z"></path> </g> </g> <g> <g> <polygon points="306.914,118.696 261.546,164.064 206.494,193.234 318.765,305.505 347.935,250.455 393.303,205.086 "></polygon> </g> </g> </g></svg></div>
+        <div class="bullet"><svg fill="#ffa200" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <polygon points="297.236,327.676 184.324,214.763 35.455,363.632 21.849,350.027 0,371.876 13.605,385.481 126.518,498.395 126.519,498.395 140.124,512 161.973,490.151 148.368,476.545 "></polygon> </g> </g> <g> <g> <path d="M479.49,12.536c-3.024,1.166-70.873,27.806-141.442,93.595l67.821,67.821c65.787-70.565,92.429-138.417,93.595-141.441 L512,0L479.49,12.536z"></path> </g> </g> <g> <g> <polygon points="306.914,118.696 261.546,164.064 206.494,193.234 318.765,305.505 347.935,250.455 393.303,205.086 "></polygon> </g> </g> </g></svg></div>
+        <div class="bullet"><svg fill="#ffa200" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <polygon points="297.236,327.676 184.324,214.763 35.455,363.632 21.849,350.027 0,371.876 13.605,385.481 126.518,498.395 126.519,498.395 140.124,512 161.973,490.151 148.368,476.545 "></polygon> </g> </g> <g> <g> <path d="M479.49,12.536c-3.024,1.166-70.873,27.806-141.442,93.595l67.821,67.821c65.787-70.565,92.429-138.417,93.595-141.441 L512,0L479.49,12.536z"></path> </g> </g> <g> <g> <polygon points="306.914,118.696 261.546,164.064 206.494,193.234 318.765,305.505 347.935,250.455 393.303,205.086 "></polygon> </g> </g> </g></svg></div>
+        <div class="bullet"><svg fill="#ffa200" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <polygon points="297.236,327.676 184.324,214.763 35.455,363.632 21.849,350.027 0,371.876 13.605,385.481 126.518,498.395 126.519,498.395 140.124,512 161.973,490.151 148.368,476.545 "></polygon> </g> </g> <g> <g> <path d="M479.49,12.536c-3.024,1.166-70.873,27.806-141.442,93.595l67.821,67.821c65.787-70.565,92.429-138.417,93.595-141.441 L512,0L479.49,12.536z"></path> </g> </g> <g> <g> <polygon points="306.914,118.696 261.546,164.064 206.494,193.234 318.765,305.505 347.935,250.455 393.303,205.086 "></polygon> </g> </g> </g></svg></div>
+      </div>
+
+      <canvas></canvas>
+
+      <!-- username input -->
+      <div class="username-form-container">
+
+        <form id="usernameForm">
+
+          <div style="display: flex; align-items: center;">
+            <input id="usernameInput" type="text" placeholder="Username" />
+
+            <label for="imageInput" id="uploadButton">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            </label>
+
+            <input id="imageInput" type="file" accept="image/*" />
+          </div>
+
+          <div style="text-align: center; margin-top: 8px">
+            <button class="startButton" type="submit">S T A R T</button>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.2/gsap.min.js"
+      integrity="sha512-kVlGhj2qFy+KBCFuvjBJTGUMxbdqJKs4yK2jh0e0VPhWUPiPC87bzm4THmaaIee3Oj7j6sDpTTgm2EPPiESqBg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script src="./js/classes/Enemy.js"></script>
+    <script src="./js/classes/Player.js"></script>
+    <script src="./js/classes/Particle.js"></script>
+    <script src="./js/classes/Projectile.js"></script>
+    <script src="./js/classes/Walls.js"></script>
+    <script src="./js/classes/Amo.js"></script>
+    <script src="./js/frontend.js"></script>
+    <script src="./js/eventListeners.js"></script>
+  </body>
+</html>
