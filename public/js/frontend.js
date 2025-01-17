@@ -18,9 +18,9 @@ const y = canvas.height / 2
 const frontEndPlayers = {}
 const frontEndProjectiles = {}
 
-const SHOTS_COUNT = 100000;
+const SHOTS_COUNT = 10;
 
-const AMOSIZE = 0;
+const AMOSIZE = 10;
 
 
 socket.on('updateProjectiles', (backEndProjectiles) => {
@@ -181,6 +181,18 @@ socket.on('updateAmo', (newAmo) => {
   }));
 });
 
+let heal = []
+// Ontvang de amo van de server en maak nieuwe wall objecten aan
+socket.on('updateHeal', (newHeal) => {
+  heal = newHeal.map(heal => new Heal({
+    x: heal.x,
+    y: heal.y,
+    width: heal.width,
+    height: heal.height,
+    radius: 10
+  }));
+});
+
 
 
 let animationId
@@ -191,6 +203,7 @@ function animate() {
 
   walls.forEach(wall => wall.draw(c))
   amo.forEach(amo => amo.draw(c))
+  heal.forEach(heal => heal.draw(c))
 
   for (const id in frontEndPlayers) {
     const frontEndPlayer = frontEndPlayers[id]

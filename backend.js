@@ -19,10 +19,10 @@ const backEndPlayers = {}
 const backEndProjectiles = {}
 
 // SPEED PLAYER
-const SPEED = 2.5
+const SPEED = 3
 
 // SPEED KOGEL
-const KOGEL_SPEED = 3
+const KOGEL_SPEED = 4
 
 const RADIUS = 20
 const PROJECTILE_RADIUS = 5
@@ -36,23 +36,36 @@ const walls = [
   { x: 1450 - 100, y: 80, width: WIDTH_WALL, height: 150 }, // Rechter Boven muur
   { x: 1450 - 400, y: 80, width: 300, height: WIDTH_WALL }, // Boven Rechter muur
   { x: 1450 - 100, y: 650 - 230, width: WIDTH_WALL, height: 150 }, // Rechter Onder muur
-  { x: 1450 - 400, y: 650 - 85, width: 300, height: WIDTH_WALL }, // Onder Rechter muur
+  { x: 1450 - 400, y: 650 - 90, width: 300, height: WIDTH_WALL }, // Onder Rechter muur
 
   { x: 100, y: 80, width: WIDTH_WALL, height: 150 }, // Linker Boven muur
   { x: 100, y: 80, width: 300, height: WIDTH_WALL }, // Boven Linker muur
   { x: 100, y: 650 - 230, width: WIDTH_WALL, height: 150 }, // Linker Onder muur
-  { x: 100, y: 650 - 85, width: 300, height: WIDTH_WALL }, // Onder Linker muur
+  { x: 100, y: 650 - 90, width: 300, height: WIDTH_WALL }, // Onder Linker muur
 
+  /*
   { x: 1450 - 500, y: 225, width: WIDTH_WALL, height: 200 }, // Rechter muur
   { x: 500, y: 225, width: WIDTH_WALL, height: 200 }, // Linker muur
   { x: 625, y: 150, width: 200, height: WIDTH_WALL }, // Boven muur
   { x: 625, y: 650 - 150, width: 200, height: WIDTH_WALL }, // Onder muur
+   */
 ]
 
 
 let amo = [
-  { x: 1450 / 2, y: 650 / 2 - 25, width: 10, height: 10 }
+  { x: 1450 / 2, y: 650 / 2 - 200, width: 10, height: 10 }
 ];
+
+let heal = [
+  { x: 1450 / 2, y: 650 / 2 + 200, width: 10, height: 10 }
+];
+
+function getRandomPosition() {
+  return {
+    x: Math.random() * (1450 - 20) + 10, // 1450 is canvas breedte, 20 is marge voor amo-blokje
+    y: Math.random() * (650 - 20) + 10  // 650 is canvas hoogte, 20 is marge voor amo-blokje
+  };
+}
 
 
 
@@ -64,14 +77,16 @@ io.on('connection', (socket) => {
 
   socket.emit('updateAmo', amo);
 
+  socket.emit('updateHeal', heal);
+
   socket.on('initGame', ({ username, width, height, devicePixelRatio}) => {
 
     const scaledWidth = width * devicePixelRatio;
     const scaledHeight = height * devicePixelRatio;
 
     backEndPlayers[socket.id] = {
-      x: 1450/2,
-      y: 20,
+      x: Math.random() < 0.5 ? 50 : 1400,
+      y: Math.random() < 0.5 ? 50 : 600,
       color: `hsl(${360 * Math.random()}, 100%, 50%)`,
       sequenceNumber: 0,
       score: 0,
@@ -79,7 +94,7 @@ io.on('connection', (socket) => {
       hp: 3,
       canvas: { width: scaledWidth, height: scaledHeight },
       radius: RADIUS,
-      shots: 100000,
+      shots: 10,
       hasHitAmo: false,
     }
 
@@ -186,10 +201,9 @@ io.on('connection', (socket) => {
     }
 
 
-    // Controleer of de speler niet tegen het amo-blokje aanloopt
-    let collisionWithAmo = false;
-
-    for (const amoBlock of amo) {
+    // Controleer botsingen met amo-blokjes
+    for (let i = 0; i < amo.length; i++) {
+      const amoBlock = amo[i];
       const amoLeft = amoBlock.x;
       const amoRight = amoBlock.x + amoBlock.width;
       const amoTop = amoBlock.y;
@@ -201,20 +215,60 @@ io.on('connection', (socket) => {
         newY + backEndPlayer.radius > amoTop &&
         newY - backEndPlayer.radius < amoBottom
       ) {
-        collisionWithAmo = true;
-
         if (!backEndPlayer.hasHitAmo) {
           backEndPlayer.shots = 10;
           backEndPlayer.hasHitAmo = true;
+
+          // Genereer een nieuwe positie voor het amo-blokje
+          const newPosition = getRandomPosition();
+          amo[i].x = newPosition.x;
+          amo[i].y = newPosition.y;
+
+          io.emit('updateAmo', amo); // Update de clients met de nieuwe positie
         }
         break;
       }
     }
 
-     // Reset de vlag als er geen botsing meer is
-     if (!collisionWithAmo) {
+    // Reset de amo-botsingsvlag
+    if (!collisionWithWall) {
       backEndPlayer.hasHitAmo = false;
     }
+
+
+    // Controleer botsingen met heal-blokjes
+    for (let i = 0; i < heal.length; i++) {
+      const healBlock = heal[i];
+      const healLeft = healBlock.x;
+      const healRight = healBlock.x + healBlock.width;
+      const healTop = healBlock.y;
+      const healBottom = healBlock.y + healBlock.height;
+
+      if (
+        newX + backEndPlayer.radius > healLeft &&
+        newX - backEndPlayer.radius < healRight &&
+        newY + backEndPlayer.radius > healTop &&
+        newY - backEndPlayer.radius < healBottom
+      ) {
+        if (!backEndPlayer.hasHitHeal && backEndPlayers[socket.id].hp < 3) {
+          backEndPlayer.hasHitHeal = true;
+          backEndPlayers[socket.id].hp += 1;
+          // Genereer een nieuwe positie voor het heal-blokje
+          const newPosition = getRandomPosition();
+          heal[i].x = newPosition.x;
+          heal[i].y = newPosition.y;
+
+          io.emit('updateHeal', heal); // Update de clients met de nieuwe positie
+        }
+        break;
+      }
+    }
+
+    // Reset de heal-botsingsvlag
+    if (!collisionWithWall) {
+      backEndPlayer.hasHitHeal = false;
+    }
+
 
   
     // Zorg ervoor dat de speler niet buiten het canvas beweegt
