@@ -18,6 +18,8 @@ const y = canvas.height / 2
 const frontEndPlayers = {}
 const frontEndProjectiles = {}
 
+const SHOTS_COUNT = 10;
+
 
 socket.on('updateProjectiles', (backEndProjectiles) => {
   for (const id in backEndProjectiles) {
@@ -56,13 +58,19 @@ socket.on('updatePlayers', (backEndPlayers) => {
       const bullets = bulletsContainer.querySelectorAll(".bullet");
 
       // Toon of verberg bullets afhankelijk van het aantal schoten
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < SHOTS_COUNT; i++) {
         if (i < player.shots) {
           bullets[i].style.display = "inline-block"; // Bullet zichtbaar maken
         } else {
           bullets[i].style.opacity = 0; // Bullet verbergen
         }
       }
+
+      if (player.shots === 10) {
+        bullets.forEach(bullet => {
+            bullet.style.opacity = 1; // Bullet volledig zichtbaar maken
+        });
+    }
     }
 
     if (!frontEndPlayers[id]) {
@@ -166,7 +174,8 @@ socket.on('updateAmo', (newAmo) => {
     x: amo.x,
     y: amo.y,
     width: amo.width,
-    height: amo.height
+    height: amo.height,
+    radius: 10
   }));
 });
 

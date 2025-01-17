@@ -31,7 +31,7 @@ let projectileId = 0
 //canvas.width = 1450
 //canvas.height = 650
 // Voeg hier je muren array toe
-const WIDTH_WALL = 5
+const WIDTH_WALL = 10;
 const walls = [
   { x: 1450 - 100, y: 80, width: WIDTH_WALL, height: 150 }, // Rechter Boven muur
   { x: 1450 - 400, y: 80, width: 300, height: WIDTH_WALL }, // Boven Rechter muur
@@ -49,9 +49,12 @@ const walls = [
   { x: 625, y: 650 - 150, width: 200, height: WIDTH_WALL }, // Onder muur
 ]
 
-const amo =[
-  { x: 1450/2 - 12.5, y: 650/2 - 12.5, width: 25, height: 25 }
-]
+
+let amo = [
+  { x: 1450 / 2, y: 650 / 2 - 25, width: 10, height: 10 }
+];
+
+
 
 io.on('connection', (socket) => {
   console.log('a user connected')
@@ -59,6 +62,8 @@ io.on('connection', (socket) => {
   io.emit('updatePlayers', backEndPlayers)
 
   socket.emit('updateWalls', walls);
+
+  socket.emit('updateAmo', amo);
 
   socket.on('initGame', ({ username, width, height, devicePixelRatio}) => {
 
@@ -75,7 +80,8 @@ io.on('connection', (socket) => {
       hp: 3,
       canvas: { width: scaledWidth, height: scaledHeight },
       radius: RADIUS,
-      shots: 1000,
+      shots: 10,
+      hasHitAmo: false,
     }
 
     backEndPlayers[socket.id].canvas = {
@@ -166,21 +172,53 @@ io.on('connection', (socket) => {
       const wallBottom = wall.y + wall.height;
   
       if (
-        playerSides.right - 10 > wallLeft &&
-        playerSides.left + 10< wallRight &&
-        playerSides.bottom - 10> wallTop &&
-        playerSides.top + 10< wallBottom
+        playerSides.right - 5 > wallLeft &&
+        playerSides.left + 5< wallRight &&
+        playerSides.bottom - 5> wallTop &&
+        playerSides.top + 5< wallBottom
       ) {
         collisionWithWall = true;
         break;
       }
     }
-  
+
     // Als er geen botsing is, werk dan de positie bij
     if (!collisionWithWall) {
       backEndPlayer.x = newX;
       backEndPlayer.y = newY;
     }
+
+
+    // Controleer of de speler niet tegen het amo-blokje aanloopt
+    let collisionWithAmo = false;
+
+    for (const amoBlock of amo) {
+      const amoLeft = amoBlock.x;
+      const amoRight = amoBlock.x + amoBlock.width;
+      const amoTop = amoBlock.y;
+      const amoBottom = amoBlock.y + amoBlock.height;
+
+      if (
+        newX + backEndPlayer.radius > amoLeft &&
+        newX - backEndPlayer.radius < amoRight &&
+        newY + backEndPlayer.radius > amoTop &&
+        newY - backEndPlayer.radius < amoBottom
+      ) {
+        collisionWithAmo = true;
+
+        if (!backEndPlayer.hasHitAmo) {
+          backEndPlayer.shots = 10;
+          backEndPlayer.hasHitAmo = true;
+        }
+        break;
+      }
+    }
+
+     // Reset de vlag als er geen botsing meer is
+     if (!collisionWithAmo) {
+      backEndPlayer.hasHitAmo = false;
+    }
+
   
     // Zorg ervoor dat de speler niet buiten het canvas beweegt
     const playerSides = {
