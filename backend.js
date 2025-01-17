@@ -19,10 +19,10 @@ const backEndPlayers = {}
 const backEndProjectiles = {}
 
 // SPEED PLAYER
-const SPEED = 3.5
+const SPEED = 3
 
 // SPEED KOGEL
-const KOGEL_SPEED = 5
+const KOGEL_SPEED = 4
 
 const RADIUS = 20
 const PROJECTILE_RADIUS = 5
@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
 
     backEndPlayers[socket.id] = {
       x: Math.random() < 0.5 ? 50 : 1400,
-      y: Math.random() < 0.5 ? 50 : 600,
+      y: Math.random() < 0.5 ? 50 : 550,
       color: `hsl(${360 * Math.random()}, 100%, 50%)`,
       sequenceNumber: 0,
       score: 0,
@@ -376,7 +376,7 @@ setInterval(() => {
 
   io.emit('updateProjectiles', backEndProjectiles)
   io.emit('updatePlayers', backEndPlayers)
-}, 15)
+}, 10)
 
 server.listen(port, () => {
 })
