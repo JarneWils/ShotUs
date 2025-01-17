@@ -57,7 +57,6 @@ let amo = [
 
 
 io.on('connection', (socket) => {
-  console.log('a user connected')
 
   io.emit('updatePlayers', backEndPlayers)
 
@@ -118,12 +117,10 @@ io.on('connection', (socket) => {
       playerId: socket.id
     }
 
-    console.log(backEndProjectiles)
 
   })
 
   socket.on('disconnect', (reason) => {
-    console.log(reason)
     delete backEndPlayers[socket.id]
     io.emit('updatePlayers', backEndPlayers)
   })
@@ -285,7 +282,6 @@ setInterval(() => {
           toDeleteProjectiles.push(id)
           if (backEndPlayers[playerId].hp <= 0) {
             delete backEndPlayers[playerId];
-            console.log('Er is ene dood')
           }
           break
         }
@@ -326,7 +322,5 @@ setInterval(() => {
 }, 15)
 
 server.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
 })
 
-console.log('server did load')
