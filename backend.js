@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
       hp: 3,
       canvas: { width: scaledWidth, height: scaledHeight },
       radius: RADIUS,
-      shots: 10,
+      shots: 100000,
       hasHitAmo: false,
     }
 
