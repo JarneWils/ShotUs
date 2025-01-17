@@ -31,8 +31,11 @@ let projectileId = 0
 //canvas.width = 1450
 //canvas.height = 650
 // Voeg hier je muren array toe
+
 const WIDTH_WALL = 10;
+
 const walls = [
+/*
   { x: 1450 - 100, y: 80, width: WIDTH_WALL, height: 150 }, // Rechter Boven muur
   { x: 1450 - 400, y: 80, width: 300, height: WIDTH_WALL }, // Boven Rechter muur
   { x: 1450 - 100, y: 650 - 230, width: WIDTH_WALL, height: 150 }, // Rechter Onder muur
@@ -43,7 +46,6 @@ const walls = [
   { x: 100, y: 650 - 230, width: WIDTH_WALL, height: 150 }, // Linker Onder muur
   { x: 100, y: 650 - 90, width: 300, height: WIDTH_WALL }, // Onder Linker muur
 
-  /*
   { x: 1450 - 500, y: 225, width: WIDTH_WALL, height: 200 }, // Rechter muur
   { x: 500, y: 225, width: WIDTH_WALL, height: 200 }, // Linker muur
   { x: 625, y: 150, width: 200, height: WIDTH_WALL }, // Boven muur
@@ -57,7 +59,8 @@ let amo = [
 ];
 
 let heal = [
-  { x: 1450 / 2, y: 650 / 2 + 200, width: 10, height: 10 }
+  { x: 1450 / 2 - 200, y: 650 / 2 + 200, width: 10, height: 10 },
+  { x: 1450 / 2 + 200, y: 650 / 2 + 200, width: 10, height: 10 }
 ];
 
 function getRandomPosition() {
@@ -184,10 +187,10 @@ io.on('connection', (socket) => {
       const wallBottom = wall.y + wall.height;
   
       if (
-        playerSides.right + 0 > wallLeft &&
-        playerSides.left - 0 < wallRight &&
-        playerSides.bottom + 0 > wallTop &&
-        playerSides.top - 0 < wallBottom
+        playerSides.right > wallLeft &&
+        playerSides.left < wallRight &&
+        playerSides.bottom > wallTop &&
+        playerSides.top < wallBottom
       ) {
         collisionWithWall = true;
         break;
@@ -331,12 +334,12 @@ setInterval(() => {
         backEndProjectiles[id].playerId !== playerId
       ) {
         if (backEndPlayers[backEndProjectiles[id].playerId]) {
+          backEndPlayers[backEndProjectiles[id].playerId].score += 1;
+          backEndPlayers[playerId].hp -= 1;
           toDeleteProjectiles.push(id)
           if (backEndPlayers[playerId].hp <= 0) {
             delete backEndPlayers[playerId];
           }
-          backEndPlayers[backEndProjectiles[id].playerId].score += 1;
-          backEndPlayers[playerId].hp -= 1;
           break
         }
       }
