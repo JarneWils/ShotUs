@@ -19,10 +19,10 @@ const backEndPlayers = {}
 const backEndProjectiles = {}
 
 // SPEED PLAYER
-const SPEED = 3
+const SPEED = 3.5
 
 // SPEED KOGEL
-const KOGEL_SPEED = 4
+const KOGEL_SPEED = 5
 
 const RADIUS = 20
 const PROJECTILE_RADIUS = 5
@@ -184,10 +184,10 @@ io.on('connection', (socket) => {
       const wallBottom = wall.y + wall.height;
   
       if (
-        playerSides.right - 5 > wallLeft &&
-        playerSides.left + 5< wallRight &&
-        playerSides.bottom - 5> wallTop &&
-        playerSides.top + 5< wallBottom
+        playerSides.right + 0 > wallLeft &&
+        playerSides.left - 0 < wallRight &&
+        playerSides.bottom + 0 > wallTop &&
+        playerSides.top - 0 < wallBottom
       ) {
         collisionWithWall = true;
         break;
@@ -331,12 +331,12 @@ setInterval(() => {
         backEndProjectiles[id].playerId !== playerId
       ) {
         if (backEndPlayers[backEndProjectiles[id].playerId]) {
-          backEndPlayers[backEndProjectiles[id].playerId].score += 1;
-          backEndPlayers[playerId].hp -= 1;
           toDeleteProjectiles.push(id)
           if (backEndPlayers[playerId].hp <= 0) {
             delete backEndPlayers[playerId];
           }
+          backEndPlayers[backEndProjectiles[id].playerId].score += 1;
+          backEndPlayers[playerId].hp -= 1;
           break
         }
       }
@@ -349,10 +349,10 @@ setInterval(() => {
       const projectileTop = backEndProjectiles[id].y - PROJECTILE_RADIUS
       const projectileBottom = backEndProjectiles[id].y + PROJECTILE_RADIUS
 
-      const wallLeft = wall.x
-      const wallRight = wall.x + wall.width
-      const wallTop = wall.y
-      const wallBottom = wall.y + wall.height
+      const wallLeft = wall.x - 5
+      const wallRight = wall.x + wall.width + 5
+      const wallTop = wall.y - 5
+      const wallBottom = wall.y + wall.height + 5
 
       if (
         projectileRight > wallLeft &&
