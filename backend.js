@@ -52,22 +52,26 @@ const walls = [
   { x: 625, y: 150, width: 200, height: WIDTH_WALL }, // Boven muur
   { x: 625, y: 650 - 150, width: 200, height: WIDTH_WALL }, // Onder muur
    */
+  { x: 100, y: 100, width: 550, height: 150 }, // Linker Boven blok
+  { x: 100, y: 650 - 275, width: 550, height: 175 }, // Linker Onder blok
+  { x: 1450 - 650, y: 100, width: 550, height: 150 }, // Rechter Boven blok
+  { x: 1450 - 650, y: 650 - 275, width: 550, height: 175 }, // Rechter Onder blok
 ]
 
 
 let amo = [
-  { x: 1450 / 2, y: 650 / 2 - 200, width: 10, height: 10 }
+  { x: 1450 / 2, y: 50, width: 10, height: 10 }
 ];
 
 let heal = [
-  { x: 1450 / 2 - 200, y: 650 / 2 + 200, width: 10, height: 10 },
-  { x: 1450 / 2 + 200, y: 650 / 2 + 200, width: 10, height: 10 }
+  { x: 50, y: 650 / 2 - 5, width: 10, height: 10 },
+  { x: 1450 -50, y: 650 / 2 - 5, width: 10, height: 10 }
 ];
 
 function getRandomPosition() {
   return {
-    x: Math.random() * (1450 - 20) + 10, // 1450 is canvas breedte, 20 is marge voor amo-blokje
-    y: Math.random() * (650 - 20) + 10  // 650 is canvas hoogte, 20 is marge voor amo-blokje
+    x: [50, 350, 725, 1050, 1400][Math.floor(Math.random() * 5)], // 1450 is canvas breedte, 20 is marge voor amo-blokje
+    y: [50, 312, 575][Math.floor(Math.random() * 3)]  // 650 is canvas hoogte, 20 is marge voor amo-blokje
   };
 }
 
