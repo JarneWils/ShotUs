@@ -22,7 +22,7 @@ const backEndProjectiles = {}
 const SPEED = 3
 
 // SPEED KOGEL
-const KOGEL_SPEED = 4
+const KOGEL_SPEED = 3
 
 const RADIUS = 20
 const PROJECTILE_RADIUS = 5
