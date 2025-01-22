@@ -18,6 +18,29 @@ const y = canvas.height / 2
 const frontEndPlayers = {}
 const frontEndProjectiles = {}
 
+const backgroundAudio = document.getElementById('backgroundAudio');
+const gunAudio = document.getElementById('gunAudio');
+
+function startAudioOnInteraction() {
+  backgroundAudio.play()
+    .then(() => {
+      console.log('Audio gestart na interactie.');
+      // Verwijder de event listeners na succesvolle start
+      document.removeEventListener('click', startAudioOnInteraction);
+      document.removeEventListener('keydown', startAudioOnInteraction);
+      document.removeEventListener('scroll', startAudioOnInteraction);
+    })
+    .catch((error) => {
+      console.error('Audio kon niet starten:', error);
+    });
+}
+
+// Luister naar verschillende soorten interacties
+document.addEventListener('click', startAudioOnInteraction);
+document.addEventListener('keydown', startAudioOnInteraction);
+document.addEventListener('scroll', startAudioOnInteraction);
+
+
 const SHOTS_COUNT = 10;
 
 const AMOSIZE = 10;
