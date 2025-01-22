@@ -4,21 +4,15 @@ class Walls {
     this.y = y;
     this.width = width;
     this.height = height;
-    this.radius = 25; // Hoekradius voor afgeronde hoeken
+    //this.radius = 25;
   }
 
   draw(c) {
-    c.fillStyle = '#000000';  // Zwarte kleur voor de rechthoek
-    c.strokeStyle = '#475569'; // Grijze outline
-    c.lineWidth = 5;          // Breedte van de outline
+    c.fillStyle = '#475569';
 
     // Begin een nieuw pad voor de rechthoek met afgeronde hoeken
     c.beginPath();
-    c.moveTo(this.x + this.radius, this.y); // Begin aan de bovenkant met afgeronde hoeken
-    c.arcTo(this.x + this.width, this.y, this.x + this.width, this.y + this.height, this.radius); // Boven rechterhoek
-    c.arcTo(this.x + this.width, this.y + this.height, this.x, this.y + this.height, this.radius); // Onder rechterhoek
-    c.arcTo(this.x, this.y + this.height, this.x, this.y, this.radius); // Onder linkerhoek
-    c.arcTo(this.x, this.y, this.x + this.width, this.y, this.radius); // Boven linkerhoek
+    c.fillRect(this.x, this.y, this.width, this.height, );
     c.closePath();
 
     // Teken de rechthoek met gevulde zwarte kleur

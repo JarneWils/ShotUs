@@ -37,7 +37,7 @@ const WIDTH_WALL = 10;
 
 
 const walls = [
-/*
+
   { x: 1450 - 100, y: 80, width: WIDTH_WALL, height: 150 }, // Rechter Boven muur
   { x: 1450 - 400, y: 80, width: 300, height: WIDTH_WALL }, // Boven Rechter muur
   { x: 1450 - 100, y: 650 - 230, width: WIDTH_WALL, height: 150 }, // Rechter Onder muur
@@ -52,11 +52,12 @@ const walls = [
   { x: 500, y: 225, width: WIDTH_WALL, height: 200 }, // Linker muur
   { x: 625, y: 150, width: 200, height: WIDTH_WALL }, // Boven muur
   { x: 625, y: 650 - 150, width: 200, height: WIDTH_WALL }, // Onder muur
-   */
+  /*
   { x: 100, y: 100, width: 550, height: 175 }, // Linker Boven blok
   { x: 100, y: 650 - 275, width: 550, height: 175 }, // Linker Onder blok
   { x: 1450 - 650, y: 100, width: 550, height: 175 }, // Rechter Boven blok
   { x: 1450 - 650, y: 650 - 275, width: 550, height: 175 }, // Rechter Onder blok
+  */
 ]
 
 
